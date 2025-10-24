@@ -94,6 +94,30 @@ body {
   transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
 }
 
+.sidebar__toggleIcon {
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 20px;
+  justify-content: center;
+  position: relative;
+  width: 24px;
+  transition: transform 200ms ease;
+}
+
+.sidebar__toggleIcon[data-collapsed='true'] {
+  transform: rotate(90deg);
+}
+
+.sidebar__toggleBar {
+  background: currentColor;
+  border-radius: 2px;
+  display: block;
+  height: 2px;
+  width: 20px;
+}
+
 .sidebar__toggle:hover {
   background: rgba(60, 60, 60, 0.9);
 }
@@ -167,6 +191,7 @@ body {
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
   width: 100%;
   text-decoration: none;
+  position: relative;
 }
 
 .sidebar__navButton:hover {
@@ -194,6 +219,7 @@ body {
 .sidebar__navLabel {
   font-size: 0.95rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .appLayout[data-collapsed='true'] .sidebar__brandText,
@@ -204,6 +230,66 @@ body {
 .appLayout[data-collapsed='true'] .sidebar__navButton {
   justify-content: center;
   padding-inline: 12px;
+}
+
+.sidebar__dropdownCaret {
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  height: 8px;
+  margin-left: auto;
+  transform: rotate(45deg);
+  transition: transform 150ms ease;
+  width: 8px;
+}
+
+.sidebar__navDropdown[data-state='open'] .sidebar__dropdownCaret {
+  transform: rotate(-135deg);
+}
+
+.sidebar__navDropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar__dropdownList {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 0 44px;
+  padding: 8px 0 0 16px;
+  list-style: none;
+}
+
+.sidebar__dropdownItem {
+  align-items: center;
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.85rem;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.sidebar__dropdownItem:hover {
+  background: rgba(60, 60, 60, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar__dropdownItem:focus-visible {
+  outline: 2px solid rgb(180, 180, 255);
+  outline-offset: 2px;
+}
+
+.appLayout[data-collapsed='true'] .sidebar__dropdownCaret,
+.appLayout[data-collapsed='true'] .sidebar__dropdownList {
+  display: none;
 }
 
 .mainContent {
