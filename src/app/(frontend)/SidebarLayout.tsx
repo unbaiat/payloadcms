@@ -215,15 +215,9 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                   )
                 }
 
-                const content = (
-                  <>
-                    <span className="sidebar__navLabel">{item.label}</span>
-                  </>
-                )
-
-                return (
-                  <li key={item.id}>
-                    {item.type === 'link' ? (
+                if (item.type === 'link') {
+                  return (
+                    <li key={item.id}>
                       <a
                         aria-label={item.label}
                         className="sidebar__navButton"
@@ -232,22 +226,13 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                         title={isCollapsed ? item.label : undefined}
                       >
                         {item.icon}
-                        {content}
+                        <span className="sidebar__navLabel">{item.label}</span>
                       </a>
-                    ) : (
-                      <button
-                        aria-label={item.label}
-                        className="sidebar__navButton"
-                        data-tooltip={isCollapsed ? item.label : undefined}
-                        type="button"
-                        title={isCollapsed ? item.label : undefined}
-                      >
-                        {item.icon}
-                        {content}
-                      </button>
-                    )}
-                  </li>
-                )
+                    </li>
+                  )
+                }
+
+                return null
               })}
             </ul>
           </nav>
