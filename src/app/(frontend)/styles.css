@@ -16,6 +16,12 @@
   --border-strong: rgba(255, 255, 255, 0.22);
   --border-subtle: rgba(255, 255, 255, 0.12);
   --blur: 22px;
+  --fs-base: clamp(1rem, 0.94rem + 0.35vw, 1.125rem);
+  --fs-sm: clamp(0.85rem, 0.8rem + 0.3vw, 0.95rem);
+  --fs-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.85rem);
+  --fs-lg: clamp(1.15rem, 1.04rem + 0.4vw, 1.35rem);
+  --fs-xl: clamp(2.25rem, 1.9rem + 1.8vw, 3.25rem);
+  --spacing-unit: clamp(18px, 14px + 1.6vw, 32px);
 }
 
 * {
@@ -39,16 +45,11 @@ body,
 
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 18px;
-  line-height: 32px;
+  font-size: var(--fs-base);
+  line-height: 1.65;
   margin: 0;
   color: var(--text-primary);
   background: linear-gradient(135deg, rgba(12, 14, 23, 0.92), rgba(5, 7, 12, 0.96));
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-    line-height: 28px;
-  }
 }
 
 img {
@@ -59,7 +60,7 @@ img {
 
 h1 {
   margin: 24px 0 16px;
-  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  font-size: var(--fs-xl);
   line-height: 1.05;
   font-weight: 700;
   text-align: center;
@@ -67,6 +68,7 @@ h1 {
 
 p {
   margin: 16px 0;
+  font-size: var(--fs-base);
 }
 
 a {
@@ -222,7 +224,7 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -255,7 +257,7 @@ summary:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 14px;
+  padding: clamp(12px, 10px + 0.6vw, 16px) clamp(14px, 12px + 0.8vw, 18px);
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(15, 23, 42, 0.35);
@@ -323,7 +325,7 @@ summary:focus-visible {
   display: grid;
   place-items: center;
   min-height: 100vh;
-  padding: clamp(48px, 6vw, 72px);
+  padding: max(48px, var(--spacing-unit));
   position: relative;
 }
 
@@ -354,11 +356,11 @@ summary:focus-visible {
 
 .home__badge {
   align-self: center;
-  padding: 6px 14px;
+  padding: clamp(6px, 5px + 0.4vw, 10px) clamp(14px, 12px + 0.8vw, 18px);
   border-radius: 999px;
   background: var(--brand-soft);
   color: var(--brand);
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-weight: 600;
@@ -377,6 +379,7 @@ summary:focus-visible {
   color: var(--text-secondary);
   max-width: 460px;
   margin: 0 auto;
+  font-size: clamp(1rem, 0.96rem + 0.35vw, 1.15rem);
 }
 
 .home__actions {
@@ -387,9 +390,9 @@ summary:focus-visible {
 }
 
 .home__action {
-  padding: 12px 22px;
+  padding: clamp(12px, 10px + 0.8vw, 18px) clamp(20px, 18px + 1vw, 28px);
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: clamp(0.95rem, 0.92rem + 0.25vw, 1.05rem);
   font-weight: 600;
   transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid transparent;
@@ -417,7 +420,7 @@ summary:focus-visible {
   flex-direction: column;
   gap: 8px;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
 }
 
 .home__codeLink {
@@ -429,6 +432,7 @@ summary:focus-visible {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   transition: border-color 0.2s ease, transform 0.2s ease;
+  font-size: var(--fs-sm);
 }
 
 .home__codeLink:hover {
@@ -440,12 +444,12 @@ summary:focus-visible {
   display: grid;
   place-items: center;
   min-height: 100vh;
-  padding: clamp(48px, 6vw, 72px);
+  padding: max(48px, var(--spacing-unit));
 }
 
 .test-page__card {
   width: min(100%, 520px);
-  padding: clamp(36px, 6vw, 52px);
+  padding: clamp(32px, 28px + 1.4vw, 52px);
   border-radius: var(--radius-lg);
   background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(8, 47, 73, 0.82));
   border: 1px solid rgba(56, 189, 248, 0.18);
@@ -458,11 +462,11 @@ summary:focus-visible {
 
 .test-page__badge {
   align-self: center;
-  padding: 6px 16px;
+  padding: clamp(6px, 5px + 0.4vw, 10px) clamp(16px, 13px + 0.8vw, 22px);
   border-radius: 999px;
   background: rgba(56, 189, 248, 0.16);
   color: rgba(56, 189, 248, 0.9);
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 600;
@@ -470,7 +474,7 @@ summary:focus-visible {
 
 .test-page__card p {
   margin: 0;
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.35rem, 1.15rem + 1vw, 2rem);
   font-weight: 600;
 }
 
@@ -511,5 +515,40 @@ summary:focus-visible {
 
   .home__actions {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 540px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .sidebar {
+    padding: 20px 18px;
+    gap: 20px;
+  }
+
+  .sidebar__profile {
+    padding: 12px;
+  }
+
+  .home {
+    padding: 48px 18px;
+  }
+
+  .home__card {
+    padding: 26px 20px;
+  }
+
+  .home__actions {
+    gap: 12px;
+  }
+
+  .test-page {
+    padding: 48px 18px;
+  }
+
+  .test-page__card {
+    padding: 26px 20px;
   }
 }
