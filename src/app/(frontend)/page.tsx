@@ -18,8 +18,9 @@ export default async function HomePage() {
 
   const content = (
     <div className="home">
-      <div className="content">
-        <picture>
+      <section className="home__card">
+        <div className="home__badge">CY Platform</div>
+        <picture className="home__logo">
           <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
           <Image
             alt="Payload Logo"
@@ -28,33 +29,36 @@ export default async function HomePage() {
             width={65}
           />
         </picture>
-        {!user && <h1>Welcome to CY</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
+        <h1>{!user ? 'Welcome to CY' : `Welcome back, ${user.email}`}</h1>
+        <p className="home__subtitle">
+          Launch projects faster with an opinionated starter that is ready for modern content
+          operations.
+        </p>
+        <div className="home__actions">
           <a
-            className="admin"
+            className="home__action home__action--primary"
             href={payloadConfig.routes.admin}
             rel="noopener noreferrer"
             target="_blank"
           >
-            Go to admin panel
+            Go to admin
           </a>
           <a
-            className="docs"
+            className="home__action home__action--ghost"
             href="https://payloadcms.com/docs"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Documentation
+            Browse docs
           </a>
         </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
+        <footer className="home__footer">
+          <p>Personalize this experience from the source</p>
+          <a className="home__codeLink" href={fileURL}>
+            <code>app/(frontend)/page.tsx</code>
+          </a>
+        </footer>
+      </section>
     </div>
   )
 
@@ -64,7 +68,7 @@ export default async function HomePage() {
 
   return (
     <div className="app-shell">
-      <Sidebar userEmail={user.email} />
+      <Sidebar activePath="/" userEmail={user.email} />
       {content}
     </div>
   )

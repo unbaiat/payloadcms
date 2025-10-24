@@ -19,9 +19,12 @@ export default async function TestPage() {
 
   return (
     <div className="app-shell">
-      <Sidebar userEmail={user.email} />
+      <Sidebar activePath="/test" userEmail={user.email} />
       <div className="test-page">
-        <p>Its working.</p>
+        <div className="test-page__card">
+          <span className="test-page__badge">Diagnostics</span>
+          <p>Its working.</p>
+        </div>
       </div>
     </div>
   )
