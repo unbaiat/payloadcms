@@ -95,19 +95,14 @@ body {
 }
 
 .sidebar__toggleIcon {
-  align-items: center;
   display: inline-flex;
   flex-direction: column;
-  gap: 5px;
-  height: 20px;
+  gap: 4px;
+  height: 18px;
+  align-items: flex-start;
   justify-content: center;
   position: relative;
-  width: 24px;
-  transition: transform 200ms ease;
-}
-
-.sidebar__toggleIcon[data-collapsed='true'] {
-  transform: rotate(90deg);
+  width: 18px;
 }
 
 .sidebar__toggleBar {
@@ -115,7 +110,22 @@ body {
   border-radius: 2px;
   display: block;
   height: 2px;
-  width: 20px;
+  transition: width 150ms ease;
+  width: 18px;
+}
+
+.sidebar__toggleBar:nth-child(2) {
+  width: 14px;
+}
+
+.sidebar__toggleBar:nth-child(3) {
+  width: 10px;
+}
+
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(1),
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(2),
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(3) {
+  width: 18px;
 }
 
 .sidebar__toggle:hover {
