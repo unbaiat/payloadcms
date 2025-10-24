@@ -126,15 +126,18 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
   }, [isCollapsed])
 
   const handleDropdownToggle = (id: string) => {
+    if (isCollapsed) {
+      setIsCollapsed(false)
+      setOpenDropdowns({ [id]: true })
+      return
+    }
+
     setOpenDropdowns((prev) => {
       const nextIsOpen = !prev[id]
-      const nextState: Record<string, boolean> = {}
-
       if (nextIsOpen) {
-        nextState[id] = true
+        return { [id]: true }
       }
-
-      return nextState
+      return {}
     })
   }
 
