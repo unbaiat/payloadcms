@@ -5,7 +5,6 @@ import React from 'react'
 import { fileURLToPath } from 'url'
 
 import config from '@/payload.config'
-import { Sidebar } from './components/Sidebar'
 import './styles.css'
 
 export default async function HomePage() {
@@ -16,7 +15,7 @@ export default async function HomePage() {
 
   const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
 
-  const content = (
+  return (
     <div className="home">
       <div className="content">
         <picture>
@@ -55,17 +54,6 @@ export default async function HomePage() {
           <code>app/(frontend)/page.tsx</code>
         </a>
       </div>
-    </div>
-  )
-
-  if (!user) {
-    return content
-  }
-
-  return (
-    <div className="app-shell">
-      <Sidebar userEmail={user.email} />
-      {content}
     </div>
   )
 }
