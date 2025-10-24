@@ -37,6 +37,28 @@ describe('SidebarLayout navigation', () => {
     expect(overviewItem).toBeVisible()
   })
 
+  it('closes an open dropdown when toggled again', () => {
+    render(
+      <SidebarLayout adminHref="/admin">
+        <div>Content</div>
+      </SidebarLayout>,
+    )
+
+    const test1Toggle = screen.getAllByRole('button', { name: 'Test 1' }).at(-1)
+    expect(test1Toggle).toBeTruthy()
+    fireEvent.click(test1Toggle!)
+
+    const overviewItems = screen.getAllByRole('menuitem', { name: 'Overview', hidden: true })
+    const overviewItem = overviewItems.at(-1)
+    if (!overviewItem) {
+      throw new Error('Expected Overview dropdown item to be present')
+    }
+    expect(overviewItem).toBeVisible()
+
+    fireEvent.click(test1Toggle!)
+    expect(overviewItem).not.toBeVisible()
+  })
+
   it('expands the sidebar before showing a dropdown when collapsed', async () => {
     setWindowInnerWidth(800)
 

@@ -281,6 +281,14 @@ body {
   transition: border-color 150ms ease, background 150ms ease;
 }
 
+.sidebar__navDropdown[data-state='closed'] .sidebar__dropdownList {
+  display: none;
+}
+
+.sidebar__navDropdown[data-state='open'] .sidebar__dropdownList {
+  display: flex;
+}
+
 .sidebar__dropdownItem:hover {
   background: rgba(60, 60, 60, 0.85);
   border-color: rgba(255, 255, 255, 0.18);
