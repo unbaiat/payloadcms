@@ -27,15 +27,6 @@ const cloudflare =
     ? await getCloudflareContextFromWrangler()
     : await getCloudflareContext({ async: true })
 
-const payloadSecret = process.env.PAYLOAD_SECRET || 'development-secret'
-
-if (!process.env.PAYLOAD_SECRET) {
-  process.env.PAYLOAD_SECRET = payloadSecret
-  console.warn(
-    'PAYLOAD_SECRET was not set. Using default development secret. Set PAYLOAD_SECRET in production.',
-  )
-}
-
 export default buildConfig({
   admin: {
     components: {
@@ -86,7 +77,7 @@ export default buildConfig({
       collections: { media: true },
     }),
   ],
-  secret: payloadSecret,
+  secret: process.env.PAYLOAD_SECRET || '',
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
