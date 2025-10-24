@@ -1,4 +1,5 @@
 import React from 'react'
+import SidebarLayout from './SidebarLayout'
 import './styles.css'
 
 export const metadata = {
@@ -12,7 +13,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <main>{children}</main>
+        <SidebarLayout>{children}</SidebarLayout>
       </body>
     </html>
   )
