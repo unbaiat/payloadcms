@@ -77,58 +77,64 @@ body {
 }
 
 .sidebar__toggle {
+  align-items: center;
   align-self: flex-end;
-  background: none;
-  border: none;
+  background: rgba(40, 40, 40, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
   color: inherit;
   cursor: pointer;
   display: inline-flex;
-  padding: 0;
+  font: inherit;
+  gap: 8px;
+  justify-content: center;
+  min-height: 36px;
+  min-width: 36px;
+  padding: 6px 12px;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.sidebar__toggleIcon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 18px;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  width: 18px;
+}
+
+.sidebar__toggleBar {
+  background: currentColor;
+  border-radius: 2px;
+  display: block;
+  height: 2px;
+  transition: width 150ms ease;
+  width: 18px;
+}
+
+.sidebar__toggleBar:nth-child(2) {
+  width: 14px;
+}
+
+.sidebar__toggleBar:nth-child(3) {
+  width: 10px;
+}
+
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(1),
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(2),
+.sidebar__toggleIcon[data-collapsed='true'] .sidebar__toggleBar:nth-child(3) {
+  width: 18px;
+}
+
+.sidebar__toggle:hover {
+  background: rgba(60, 60, 60, 0.9);
 }
 
 .sidebar__toggle:focus-visible {
   outline: 2px solid rgb(180, 180, 255);
-  outline-offset: 3px;
-}
-
-.sidebar__toggleInner {
-  align-items: center;
-  background: rgba(36, 36, 36, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  display: inline-flex;
-  height: 38px;
-  justify-content: center;
-  padding: 0 14px;
-  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-
-.sidebar__toggle--collapsed .sidebar__toggleInner {
-  background: rgba(26, 26, 26, 0.92);
-}
-
-.sidebar__toggle:hover .sidebar__toggleInner {
-  background: rgba(60, 60, 60, 0.9);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
-}
-
-.sidebar__toggleChevron {
-  align-items: center;
-  display: inline-flex;
-  height: 20px;
-  justify-content: center;
-  width: 20px;
-}
-
-.sidebar__toggleChevronIcon {
-  height: 100%;
-  width: 100%;
-  transition: transform 180ms ease;
-}
-
-.sidebar__toggleChevron[data-state='expanded'] .sidebar__toggleChevronIcon {
-  transform: rotate(90deg);
+  outline-offset: 2px;
 }
 
 .sidebar__toggleLabel {

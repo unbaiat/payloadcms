@@ -81,25 +81,6 @@ const ShieldIcon = (
   </svg>
 )
 
-const ChevronIcon = (
-  <svg
-    aria-hidden="true"
-    className="sidebar__toggleChevronIcon"
-    viewBox="0 0 20 20"
-    width="20"
-    height="20"
-  >
-    <path
-      d="M7.5 4.5 12.5 9.5 7.5 14.5"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.8"
-    />
-  </svg>
-)
-
 export default function SidebarLayout({ adminHref, children }: SidebarLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   const [openDropdowns, setOpenDropdowns] = React.useState<Record<string, boolean>>({})
@@ -147,11 +128,7 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
   const handleDropdownToggle = (id: string) => {
     if (isCollapsed) {
       setIsCollapsed(false)
-      if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
-        window.requestAnimationFrame(() => setOpenDropdowns({ [id]: true }))
-      } else {
-        setOpenDropdowns({ [id]: true })
-      }
+      setOpenDropdowns({ [id]: true })
       return
     }
 
@@ -175,18 +152,14 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
             aria-controls="primary-navigation"
             aria-expanded={!isCollapsed}
             aria-label={toggleLabel}
-            className={`sidebar__toggle ${isCollapsed ? 'sidebar__toggle--collapsed' : 'sidebar__toggle--open'}`}
+            className="sidebar__toggle"
             onClick={() => setIsCollapsed((prev) => !prev)}
             type="button"
           >
-            <span className="sidebar__toggleInner">
-              <span
-                aria-hidden="true"
-                className="sidebar__toggleChevron"
-                data-state={isCollapsed ? 'collapsed' : 'expanded'}
-              >
-                {ChevronIcon}
-              </span>
+            <span aria-hidden="true" className="sidebar__toggleIcon" data-collapsed={isCollapsed}>
+              <span className="sidebar__toggleBar" />
+              <span className="sidebar__toggleBar" />
+              <span className="sidebar__toggleBar" />
             </span>
             <span className="sidebar__toggleLabel">{toggleLabel}</span>
           </button>
