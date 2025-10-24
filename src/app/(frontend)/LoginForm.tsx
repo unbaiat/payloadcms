@@ -2,6 +2,12 @@
 
 import React from 'react'
 
+type LoginResult = {
+  message?: string
+  error?: string
+  errors?: { message?: string }[]
+}
+
 export default function LoginForm() {
   const emailField = React.useRef<HTMLInputElement>(null)
   const passwordField = React.useRef<HTMLInputElement>(null)
@@ -33,7 +39,12 @@ export default function LoginForm() {
         method: 'POST',
       })
 
-      const result = await response.json().catch(() => null)
+      let result: LoginResult | null = null
+      try {
+        result = (await response.json()) as LoginResult
+      } catch {
+        result = null
+      }
 
       if (!response.ok) {
         const message =
