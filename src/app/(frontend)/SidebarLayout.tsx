@@ -10,17 +10,76 @@ type SidebarLayoutProps = {
 type NavDropdownItem = {
   id: string
   label: string
+  icon: React.ReactNode
 }
 
 type NavItem =
   | {
       id: string
       label: string
-      abbreviation: string
       type: 'dropdown'
       items: NavDropdownItem[]
+      icon: React.ReactNode
     }
-  | { id: string; label: string; abbreviation: string; type: 'link'; href: string }
+  | {
+      id: string
+      label: string
+      type: 'link'
+      href: string
+      icon: React.ReactNode
+    }
+
+const TestTubeIcon = (
+  <svg aria-hidden="true" className="sidebar__navIcon" height="18" viewBox="0 0 24 24" width="18">
+    <path
+      d="M15 3v2.5a6 6 0 0 1-2.536 4.928L11 11v2l5.293 5.293a1 1 0 0 1 0 1.414l-.586.586a3 3 0 0 1-4.243 0l-6.464-6.465a3 3 0 0 1 0-4.242L9 6.293V3"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.6"
+    />
+  </svg>
+)
+
+const PulseIcon = (
+  <svg aria-hidden="true" className="sidebar__navIcon" height="18" viewBox="0 0 24 24" width="18">
+    <path
+      d="M3 12h3l2 7 4-14 3 7h6"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.6"
+    />
+  </svg>
+)
+
+const SparkleIcon = (
+  <svg aria-hidden="true" className="sidebar__navIcon" height="18" viewBox="0 0 24 24" width="18">
+    <path
+      d="M12 3v2m6.364.636-1.414 1.414M21 12h-2m-1.636 6.364-1.414-1.414M12 21v-2m-6.364-.636 1.414-1.414M3 12h2m1.636-6.364 1.414 1.414M9 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.6"
+    />
+  </svg>
+)
+
+const ShieldIcon = (
+  <svg aria-hidden="true" className="sidebar__navIcon" height="18" viewBox="0 0 24 24" width="18">
+    <path
+      d="M12 21c-4.2-1.8-7-4.5-7-9V5l7-3 7 3v7c0 4.5-2.8 7.2-7 9Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.6"
+    />
+  </svg>
+)
 
 export default function SidebarLayout({ adminHref, children }: SidebarLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(false)
@@ -32,24 +91,24 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
       {
         id: 'test1',
         label: 'Test 1',
-        abbreviation: 'T1',
         type: 'dropdown',
+        icon: TestTubeIcon,
         items: [
-          { id: 'test1-overview', label: 'Overview' },
-          { id: 'test1-analytics', label: 'Analytics' },
+          { id: 'test1-overview', label: 'Overview', icon: PulseIcon },
+          { id: 'test1-analytics', label: 'Analytics', icon: SparkleIcon },
         ],
       },
       {
         id: 'test2',
         label: 'Test 2',
-        abbreviation: 'T2',
         type: 'dropdown',
+        icon: PulseIcon,
         items: [
-          { id: 'test2-reports', label: 'Reports' },
-          { id: 'test2-insights', label: 'Insights' },
+          { id: 'test2-reports', label: 'Reports', icon: SparkleIcon },
+          { id: 'test2-insights', label: 'Insights', icon: PulseIcon },
         ],
       },
-      { id: 'admin', label: 'Admin', abbreviation: 'AD', type: 'link', href: adminHref },
+      { id: 'admin', label: 'Admin', type: 'link', href: adminHref, icon: ShieldIcon },
     ],
     [adminHref],
   )
@@ -123,10 +182,10 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                           className="sidebar__navButton"
                           onClick={() => handleDropdownToggle(item.id)}
                           type="button"
+                          data-tooltip={isCollapsed ? item.label : undefined}
+                          title={isCollapsed ? item.label : undefined}
                         >
-                          <span aria-hidden="true" className="sidebar__navAbbrev">
-                            {item.abbreviation}
-                          </span>
+                          {item.icon}
                           <span className="sidebar__navLabel">{item.label}</span>
                           <span aria-hidden="true" className="sidebar__dropdownCaret" />
                         </button>
@@ -145,6 +204,7 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                                 role="menuitem"
                                 type="button"
                               >
+                                {subItem.icon}
                                 {subItem.label}
                               </button>
                             </li>
@@ -157,9 +217,6 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
 
                 const content = (
                   <>
-                    <span aria-hidden="true" className="sidebar__navAbbrev">
-                      {item.abbreviation}
-                    </span>
                     <span className="sidebar__navLabel">{item.label}</span>
                   </>
                 )
@@ -170,16 +227,22 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                       <a
                         aria-label={item.label}
                         className="sidebar__navButton"
+                        data-tooltip={isCollapsed ? item.label : undefined}
                         href={item.href}
+                        title={isCollapsed ? item.label : undefined}
                       >
+                        {item.icon}
                         {content}
                       </a>
                     ) : (
                       <button
                         aria-label={item.label}
                         className="sidebar__navButton"
+                        data-tooltip={isCollapsed ? item.label : undefined}
                         type="button"
+                        title={isCollapsed ? item.label : undefined}
                       >
+                        {item.icon}
                         {content}
                       </button>
                     )}
