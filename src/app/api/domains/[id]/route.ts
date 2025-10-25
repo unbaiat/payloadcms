@@ -6,7 +6,8 @@ type Params = {
   id: string
 }
 
-export const DELETE = async (request: NextRequest, { params }: { params: Params }) => {
+export async function DELETE(request: NextRequest, context: { params: Params }) {
+  const { params } = context
   const payload = await getPayload({ config: configPromise })
   const { user } = await payload.auth({ headers: request.headers })
 
