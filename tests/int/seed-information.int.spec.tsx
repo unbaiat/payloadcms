@@ -1,4 +1,4 @@
-import { cleanup, render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { cleanup, render, screen, fireEvent, waitFor, within } from '@testing-library/react'
 import React from 'react'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -46,6 +46,59 @@ describe('SeedInformationContent', () => {
     fireEvent.click(verifyButton)
 
     expect(infoSpy).toHaveBeenCalledWith('Verification queued for beta.net')
+  })
+
+  it('opens the dialog and adds a new domain', async () => {
+    render(<SeedInformationContent initialDomains={[]} />)
+
+    const addDomainButton = screen.getByRole('button', { name: '+ Add Domain' })
+    fireEvent.click(addDomainButton)
+
+    const dialog = await screen.findByRole('dialog', { name: 'Add Domain' })
+    const nameField = screen.getByLabelText('Domain')
+    const submitButton = within(dialog).getByRole('button', { name: 'Add Domain' })
+
+    fetchMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ id: 'domain-42', name: 'delta.com', status: 'pending' }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    )
+
+    fireEvent.change(nameField, { target: { value: 'delta.com' } })
+    fireEvent.click(submitButton)
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/domains',
+        expect.objectContaining({
+          method: 'POST',
+        }),
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('delta.com')).toBeInTheDocument()
+    })
+
+    expect(infoSpy).toHaveBeenCalledWith('Domain added: delta.com')
+  })
+
+  it('switches between domain and asset views', async () => {
+    render(<SeedInformationContent initialDomains={SAMPLE_DOMAINS} />)
+
+    const assetTab = screen.getByRole('tab', { name: 'Asset' })
+    fireEvent.click(assetTab)
+
+    expect(screen.queryByRole('button', { name: '+ Add Domain' })).not.toBeInTheDocument()
+    expect(screen.getByText('Asset management')).toBeInTheDocument()
+
+    const domainTab = screen.getByRole('tab', { name: 'Domain' })
+    fireEvent.click(domainTab)
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: '+ Add Domain' })).toBeInTheDocument()
+    })
   })
 
   it('supports bulk delete and validate by support action', async () => {

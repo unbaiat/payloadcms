@@ -617,6 +617,33 @@ body {
   gap: 6px;
 }
 
+.seedInfo__assetPlaceholder {
+  align-items: flex-start;
+  background: rgba(24, 24, 24, 0.9);
+  border: 1px dashed rgba(255, 82, 82, 0.35);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+  padding: 36px;
+  text-align: left;
+}
+
+.seedInfo__assetPlaceholder h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffe6e6;
+}
+
+.seedInfo__assetPlaceholder p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .seedInfo__dialogOverlay {
   align-items: center;
   backdrop-filter: blur(4px);

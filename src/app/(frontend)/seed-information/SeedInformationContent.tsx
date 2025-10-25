@@ -15,6 +15,7 @@ type SeedInformationContentProps = {
 export default function SeedInformationContent({
   initialDomains = [],
 }: SeedInformationContentProps) {
+  const [activeTab, setActiveTab] = React.useState<'domain' | 'asset'>('domain')
   const [domains, setDomains] = React.useState<DomainEntry[]>(initialDomains)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(() => new Set())
@@ -150,6 +151,13 @@ export default function SeedInformationContent({
     setAddDialogError(null)
   }
 
+  const handleTabChange = (tab: 'domain' | 'asset') => {
+    setActiveTab(tab)
+    if (tab !== 'domain') {
+      closeAddDialog()
+    }
+  }
+
   const handleAddDomain = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const value = newDomainName.trim().toLowerCase()
@@ -208,209 +216,244 @@ export default function SeedInformationContent({
       <section className="seedInfo">
         <header className="seedInfo__header">
           <div className="seedInfo__tabs" role="tablist" aria-label="Seed information navigation">
-            <button aria-selected type="button" className="seedInfo__tab seedInfo__tab--active">
+            <button
+              aria-selected={activeTab === 'domain'}
+              className={`seedInfo__tab${activeTab === 'domain' ? ' seedInfo__tab--active' : ''}`}
+              role="tab"
+              tabIndex={activeTab === 'domain' ? 0 : -1}
+              type="button"
+              onClick={() => handleTabChange('domain')}
+            >
               Domain
             </button>
-            <button aria-selected={false} type="button" className="seedInfo__tab">
+            <button
+              aria-selected={activeTab === 'asset'}
+              className={`seedInfo__tab${activeTab === 'asset' ? ' seedInfo__tab--active' : ''}`}
+              role="tab"
+              tabIndex={activeTab === 'asset' ? 0 : -1}
+              type="button"
+              onClick={() => handleTabChange('asset')}
+            >
               Asset
             </button>
           </div>
-
-          <div className="seedInfo__toolbar">
-            <form
-              className="seedInfo__search"
-              role="search"
-              onSubmit={(event) => {
-                event.preventDefault()
-              }}
-            >
-              <label className="seedInfo__searchLabel" htmlFor="seed-info-search">
-                Search domains
-              </label>
-              <input
-                className="seedInfo__searchInput"
-                id="seed-info-search"
-                placeholder="Search by domain"
-                type="search"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-              />
-            </form>
-            <div className="seedInfo__toolbarButtons">
-              <button
-                className="seedInfo__actionButton seedInfo__actionButton--primary"
-                type="button"
-                onClick={() => {
-                  setIsAddDialogOpen(true)
-                  setAddDialogError(null)
+          {activeTab === 'domain' ? (
+            <div className="seedInfo__toolbar">
+              <form
+                className="seedInfo__search"
+                role="search"
+                onSubmit={(event) => {
+                  event.preventDefault()
                 }}
               >
-                + Add Domain
-              </button>
-              <button
-                className="seedInfo__actionButton seedInfo__actionButton--primary"
-                type="button"
-                onClick={() => console.info('Start first scan')}
-              >
-                Start First Scan
-              </button>
+                <label className="seedInfo__searchLabel" htmlFor="seed-info-search">
+                  Search domains
+                </label>
+                <input
+                  className="seedInfo__searchInput"
+                  id="seed-info-search"
+                  placeholder="Search by domain"
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                />
+              </form>
+              <div className="seedInfo__toolbarButtons">
+                <button
+                  className="seedInfo__actionButton seedInfo__actionButton--primary"
+                  type="button"
+                  onClick={() => {
+                    setIsAddDialogOpen(true)
+                    setAddDialogError(null)
+                  }}
+                >
+                  + Add Domain
+                </button>
+                <button
+                  className="seedInfo__actionButton seedInfo__actionButton--primary"
+                  type="button"
+                  onClick={() => console.info('Start first scan')}
+                >
+                  Start First Scan
+                </button>
+              </div>
             </div>
-          </div>
+          ) : null}
         </header>
-
-        <div className="seedInfo__tableWrapper">
-          <table className="seedInfo__table">
-            <thead>
-              <tr>
-                <th scope="col">
-                  <input
-                    aria-label="Select all domains"
-                    checked={filteredDomains.length > 0 && areAllVisibleSelected}
-                    type="checkbox"
-                    ref={selectAllRef}
-                    onChange={(event) => toggleAllVisible(event.target.checked)}
-                  />
-                </th>
-                <th scope="col">Domain</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDomains.length === 0 ? (
-                <tr>
-                  <td className="seedInfo__empty" colSpan={4}>
-                    No domains match this filter.
-                  </td>
-                </tr>
-              ) : (
-                filteredDomains.map((domain) => {
-                  const isSelected = selectedIds.has(domain.id)
-                  return (
-                    <tr key={domain.id}>
-                      <td>
-                        <input
-                          aria-label={`Select ${domain.name}`}
-                          checked={isSelected}
-                          type="checkbox"
-                          onChange={() => toggleSelection(domain.id)}
-                        />
-                      </td>
-                      <td>{domain.name}</td>
-                      <td>
-                        <span className="seedInfo__status">
-                          <span aria-hidden="true" className="seedInfo__statusDot" />
-                          {statusLabel(domain.status)}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="seedInfo__rowActions">
-                          <button
-                            className="seedInfo__rowButton"
-                            type="button"
-                            onClick={() => handleVerify(domain)}
-                          >
-                            Verify
-                          </button>
-                          <button
-                            aria-label={`Delete ${domain.name}`}
-                            className="seedInfo__iconButton"
-                            disabled={rowDeletionId === domain.id || isBulkDeleting}
-                            type="button"
-                            onClick={() => {
-                              void handleDelete(domain.id)
-                            }}
-                          >
-                            <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
-                              <path
-                                d="M3 6h18M9 6V4h6v2m-7 4v8m4-8v8m4-8v8M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.6"
-                              />
-                            </svg>
-                          </button>
-                        </div>
+        {activeTab === 'domain' ? (
+          <>
+            <div className="seedInfo__tableWrapper">
+              <table className="seedInfo__table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <input
+                        aria-label="Select all domains"
+                        checked={filteredDomains.length > 0 && areAllVisibleSelected}
+                        type="checkbox"
+                        ref={selectAllRef}
+                        onChange={(event) => toggleAllVisible(event.target.checked)}
+                      />
+                    </th>
+                    <th scope="col">Domain</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredDomains.length === 0 ? (
+                    <tr>
+                      <td className="seedInfo__empty" colSpan={4}>
+                        No domains match this filter.
                       </td>
                     </tr>
-                  )
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <footer className="seedInfo__footer">
-          <div className="seedInfo__bulkActions">
-            <button
-              className="seedInfo__actionButton seedInfo__actionButton--primary"
-              disabled={selectedIds.size === 0 || isBulkDeleting}
-              type="button"
-              onClick={() => {
-                void handleDeleteSelected()
-              }}
-            >
-              {isBulkDeleting ? 'Deleting…' : 'Delete Selected Domains'}
-            </button>
-            <button
-              className="seedInfo__actionButton seedInfo__actionButton--primary"
-              disabled={isSupportLoading}
-              type="button"
-              onClick={handleValidateBySupport}
-            >
-              {isSupportLoading ? 'Validating…' : 'Validate by Support'}
-            </button>
-          </div>
-          <div className="seedInfo__pagination">
-            <span className="seedInfo__paginationLabel">Showing 1 of 1</span>
-            <div className="seedInfo__paginationButtons">
-              <button
-                aria-label="Previous page"
-                className="seedInfo__iconButton"
-                disabled
-                type="button"
-              >
-                <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
-                  <path
-                    d="m14 6-6 6 6 6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.6"
-                  />
-                </svg>
-              </button>
-              <button
-                aria-label="Next page"
-                className="seedInfo__iconButton"
-                disabled
-                type="button"
-              >
-                <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
-                  <path
-                    d="m10 6 6 6-6 6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.6"
-                  />
-                </svg>
-              </button>
+                  ) : (
+                    filteredDomains.map((domain) => {
+                      const isSelected = selectedIds.has(domain.id)
+                      return (
+                        <tr key={domain.id}>
+                          <td>
+                            <input
+                              aria-label={`Select ${domain.name}`}
+                              checked={isSelected}
+                              type="checkbox"
+                              onChange={() => toggleSelection(domain.id)}
+                            />
+                          </td>
+                          <td>{domain.name}</td>
+                          <td>
+                            <span className="seedInfo__status">
+                              <span aria-hidden="true" className="seedInfo__statusDot" />
+                              {statusLabel(domain.status)}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="seedInfo__rowActions">
+                              <button
+                                className="seedInfo__rowButton"
+                                type="button"
+                                onClick={() => handleVerify(domain)}
+                              >
+                                Verify
+                              </button>
+                              <button
+                                aria-label={`Delete ${domain.name}`}
+                                className="seedInfo__iconButton"
+                                disabled={rowDeletionId === domain.id || isBulkDeleting}
+                                type="button"
+                                onClick={() => {
+                                  void handleDelete(domain.id)
+                                }}
+                              >
+                                <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+                                  <path
+                                    d="M3 6h18M9 6V4h6v2m-7 4v8m4-8v8m4-8v8M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="1.6"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
+
+            <footer className="seedInfo__footer">
+              <div className="seedInfo__bulkActions">
+                <button
+                  className="seedInfo__actionButton seedInfo__actionButton--primary"
+                  disabled={selectedIds.size === 0 || isBulkDeleting}
+                  type="button"
+                  onClick={() => {
+                    void handleDeleteSelected()
+                  }}
+                >
+                  {isBulkDeleting ? 'Deleting…' : 'Delete Selected Domains'}
+                </button>
+                <button
+                  className="seedInfo__actionButton seedInfo__actionButton--primary"
+                  disabled={isSupportLoading}
+                  type="button"
+                  onClick={handleValidateBySupport}
+                >
+                  {isSupportLoading ? 'Validating…' : 'Validate by Support'}
+                </button>
+              </div>
+              <div className="seedInfo__pagination">
+                <span className="seedInfo__paginationLabel">Showing 1 of 1</span>
+                <div className="seedInfo__paginationButtons">
+                  <button
+                    aria-label="Previous page"
+                    className="seedInfo__iconButton"
+                    disabled
+                    type="button"
+                  >
+                    <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+                      <path
+                        d="m14 6-6 6 6 6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Next page"
+                    className="seedInfo__iconButton"
+                    disabled
+                    type="button"
+                  >
+                    <svg aria-hidden="true" height="16" viewBox="0 0 24 24" width="16">
+                      <path
+                        d="m10 6 6 6-6 6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </footer>
+          </>
+        ) : (
+          <div className="seedInfo__assetPlaceholder">
+            <h3>Asset management</h3>
+            <p>
+              Review and validate third-party assets, technologies, and inventory in this view. Integrations will
+              populate the table once configured.
+            </p>
+            <button
+              className="seedInfo__actionButton seedInfo__actionButton--primary"
+              type="button"
+              onClick={() => console.info('Configure asset integrations')}
+            >
+              Configure Integrations
+            </button>
           </div>
-        </footer>
+        )}
       </section>
 
-      {isAddDialogOpen ? (
+      {isAddDialogOpen && activeTab === 'domain' ? (
         <div
           className="seedInfo__dialogOverlay"
           role="presentation"
-          onClick={() => {
-            closeAddDialog()
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeAddDialog()
+            }
           }}
         >
           <div
