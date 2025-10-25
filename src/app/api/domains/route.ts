@@ -1,8 +1,7 @@
 import configPromise from '@payload-config'
-import { NextRequest } from 'next/server'
 import { getPayload } from 'payload'
 
-export const POST = async (request: NextRequest) => {
+export async function POST(request: Request) {
   const payload = await getPayload({ config: configPromise })
 
   const { user } = await payload.auth({ headers: request.headers })
