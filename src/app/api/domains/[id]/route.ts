@@ -1,13 +1,7 @@
 import configPromise from '@payload-config'
-import { NextRequest } from 'next/server'
 import { getPayload } from 'payload'
 
-type Params = {
-  id: string
-}
-
-export async function DELETE(request: NextRequest, context: { params: Params }) {
-  const { params } = context
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const payload = await getPayload({ config: configPromise })
   const { user } = await payload.auth({ headers: request.headers })
 
@@ -16,11 +10,7 @@ export async function DELETE(request: NextRequest, context: { params: Params }) 
   }
 
   try {
-    await payload.delete({
-      collection: 'domains',
-      id: params.id,
-      req: { user },
-    })
+    await payload.delete({ collection: 'domains', id: params.id, req: { user } })
 
     return new Response(null, { status: 204 })
   } catch (error: unknown) {
