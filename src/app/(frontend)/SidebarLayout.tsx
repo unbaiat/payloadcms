@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
 type SidebarLayoutProps = {
   adminHref: string
@@ -180,6 +181,7 @@ const GearIcon = (
 const SubItemIcon = <span aria-hidden="true" className="sidebar__navBullet" />
 
 export default function SidebarLayout({ adminHref, children }: SidebarLayoutProps) {
+  const router = useRouter()
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   const [openDropdowns, setOpenDropdowns] = React.useState<Record<string, boolean>>({})
   const toggleLabel = isCollapsed ? 'Expand navigation' : 'Collapse navigation'
@@ -257,7 +259,14 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
         type: 'dropdown',
         icon: GearIcon,
         items: [
-          { id: 'seed-information', label: 'Seed Information', icon: SubItemIcon },
+          {
+            id: 'seed-information',
+            label: 'Seed Information',
+            icon: SubItemIcon,
+            onSelect: () => {
+              router.push('/seed-information')
+            },
+          },
           { id: 'scanner-ip-addresses', label: 'Scanner IP Addresses', icon: SubItemIcon },
           { id: 'saas-third-party-keywords', label: 'SaaS & Third-Party Keywords', icon: SubItemIcon },
           { id: 'muted-instances', label: 'Muted Instances', icon: SubItemIcon },
@@ -277,7 +286,7 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
         ],
       },
     ],
-    [adminHref],
+    [adminHref, router],
   )
 
   React.useEffect(() => {

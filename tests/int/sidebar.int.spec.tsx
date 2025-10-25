@@ -1,8 +1,14 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 import SidebarLayout from '@/app/(frontend)/SidebarLayout'
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}))
 
 const originalInnerWidth = window.innerWidth
 
