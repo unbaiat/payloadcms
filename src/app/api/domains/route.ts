@@ -41,6 +41,10 @@ export async function POST(request: Request) {
     return Response.json(responseBody, { status: 201 })
   } catch (error: unknown) {
     console.error('Failed to create domain', error)
+    if (error instanceof Error && 'errors' in error) {
+      const firstError = (error as { errors: { message?: string }[] }).errors[0]
+      return new Response(firstError?.message ?? 'Failed to create domain', { status: 400 })
+    }
     return new Response('Failed to create domain', { status: 500 })
   }
 }
