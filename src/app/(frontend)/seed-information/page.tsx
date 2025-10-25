@@ -7,7 +7,7 @@ import config from '@/payload.config'
 import LoginForm from '../LoginForm'
 import SidebarLayout from '../SidebarLayout'
 import '../styles.css'
-import SeedInformationContent from './SeedInformationContent'
+import SeedInformationContent, { DomainEntry } from './SeedInformationContent'
 
 export default async function SeedInformationPage() {
   const headers = await getHeaders()
@@ -40,9 +40,30 @@ export default async function SeedInformationPage() {
 
   const adminHref = payloadConfig.routes?.admin ?? '/admin'
 
+  let initialDomains: DomainEntry[] = []
+
+  try {
+    const result = await payload.find({
+      collection: 'domains',
+      depth: 0,
+      limit: 250,
+      sort: '-createdAt',
+    })
+
+    initialDomains = result.docs
+      .map((doc) => ({
+        id: String(doc.id),
+        name: typeof doc.name === 'string' ? doc.name : '',
+        status: typeof doc.status === 'string' ? doc.status : 'pending',
+      }))
+      .filter((domain) => domain.name)
+  } catch (error) {
+    console.error('Failed to load domains', error)
+  }
+
   return (
     <SidebarLayout adminHref={adminHref}>
-      <SeedInformationContent />
+      <SeedInformationContent initialDomains={initialDomains} />
     </SidebarLayout>
   )
 }
