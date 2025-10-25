@@ -25,16 +25,16 @@ describe('SidebarLayout navigation', () => {
       </SidebarLayout>,
     )
 
-    const test1Toggle = screen.getAllByRole('button', { name: 'Test 1' }).at(-1)
-    expect(test1Toggle).toBeTruthy()
-    fireEvent.click(test1Toggle!)
+    const attackSurfaceToggle = screen.getAllByRole('button', { name: 'Attack Surface' }).at(-1)
+    expect(attackSurfaceToggle).toBeTruthy()
+    fireEvent.click(attackSurfaceToggle!)
 
-    const overviewItems = screen.getAllByRole('menuitem', { name: 'Overview', hidden: true })
-    const overviewItem = overviewItems.at(-1)
-    if (!overviewItem) {
-      throw new Error('Expected Overview dropdown item to be present')
+    const menuItems = screen.getAllByRole('menuitem', { name: 'Asset Exposure', hidden: true })
+    const menuItem = menuItems.at(-1)
+    if (!menuItem) {
+      throw new Error('Expected Asset Exposure dropdown item to be present')
     }
-    expect(overviewItem).toBeVisible()
+    expect(menuItem).toBeVisible()
   })
 
   it('closes an open dropdown when toggled again', () => {
@@ -44,19 +44,19 @@ describe('SidebarLayout navigation', () => {
       </SidebarLayout>,
     )
 
-    const test1Toggle = screen.getAllByRole('button', { name: 'Test 1' }).at(-1)
-    expect(test1Toggle).toBeTruthy()
-    fireEvent.click(test1Toggle!)
+    const attackSurfaceToggle = screen.getAllByRole('button', { name: 'Attack Surface' }).at(-1)
+    expect(attackSurfaceToggle).toBeTruthy()
+    fireEvent.click(attackSurfaceToggle!)
 
-    const overviewItems = screen.getAllByRole('menuitem', { name: 'Overview', hidden: true })
-    const overviewItem = overviewItems.at(-1)
-    if (!overviewItem) {
-      throw new Error('Expected Overview dropdown item to be present')
+    const menuItems = screen.getAllByRole('menuitem', { name: 'Asset Exposure', hidden: true })
+    const menuItem = menuItems.at(-1)
+    if (!menuItem) {
+      throw new Error('Expected Asset Exposure dropdown item to be present')
     }
-    expect(overviewItem).toBeVisible()
+    expect(menuItem).toBeVisible()
 
-    fireEvent.click(test1Toggle!)
-    expect(overviewItem).not.toBeVisible()
+    fireEvent.click(attackSurfaceToggle!)
+    expect(menuItem).not.toBeVisible()
   })
 
   it('expands the sidebar before showing a dropdown when collapsed', async () => {
@@ -75,19 +75,19 @@ describe('SidebarLayout navigation', () => {
       expect(layout).toHaveAttribute('data-collapsed', 'true')
     })
 
-    const test1Toggle = screen.getAllByRole('button', { name: 'Test 1' }).at(-1)
-    expect(test1Toggle).toBeTruthy()
-    fireEvent.click(test1Toggle!)
+    const attackSurfaceToggle = screen.getAllByRole('button', { name: 'Attack Surface' }).at(-1)
+    expect(attackSurfaceToggle).toBeTruthy()
+    fireEvent.click(attackSurfaceToggle!)
 
     await waitFor(() => {
       expect(layout).toHaveAttribute('data-collapsed', 'false')
     })
 
-    const overviewItems = screen.getAllByRole('menuitem', { name: 'Overview', hidden: true })
-    const overviewItem = overviewItems.at(-1)
-    if (!overviewItem) {
-      throw new Error('Expected Overview dropdown item to be present')
+    const menuItems = screen.getAllByRole('menuitem', { name: 'Asset Exposure', hidden: true })
+    const menuItem = menuItems.at(-1)
+    if (!menuItem) {
+      throw new Error('Expected Asset Exposure dropdown item to be present')
     }
-    expect(overviewItem).toBeVisible()
+    expect(menuItem).toBeVisible()
   })
 })

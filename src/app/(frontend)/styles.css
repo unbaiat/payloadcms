@@ -281,6 +281,15 @@ body {
   transition: border-color 150ms ease, background 150ms ease;
 }
 
+.sidebar__navBullet {
+  background: currentColor;
+  border-radius: 999px;
+  display: inline-block;
+  flex-shrink: 0;
+  height: 6px;
+  width: 6px;
+}
+
 .sidebar__navDropdown[data-state='closed'] .sidebar__dropdownList {
   display: none;
 }
