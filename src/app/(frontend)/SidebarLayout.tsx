@@ -377,8 +377,10 @@ export default function SidebarLayout({ adminHref, children }: SidebarLayoutProp
                               role="menuitem"
                               type="button"
                             >
-                              {subItem.icon}
-                              {subItem.label}
+                          <span aria-hidden="true" className="sidebar__dropdownIconWrapper">
+                            {subItem.icon}
+                          </span>
+                          <span className="sidebar__dropdownLabel">{subItem.label}</span>
                               </button>
                             </li>
                           ))}
