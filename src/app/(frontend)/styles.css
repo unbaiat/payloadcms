@@ -202,6 +202,7 @@ body {
   width: 100%;
   text-decoration: none;
   position: relative;
+  word-break: break-word;
 }
 
 .sidebar__navIcon {
@@ -222,7 +223,9 @@ body {
 .sidebar__navLabel {
   font-size: 0.95rem;
   font-weight: 500;
-  white-space: nowrap;
+  flex: 1;
+  line-height: 1.25;
+  white-space: normal;
 }
 
 .appLayout[data-collapsed='true'] .sidebar__brandText,
@@ -267,7 +270,7 @@ body {
 }
 
 .sidebar__dropdownItem {
-  align-items: center;
+  align-items: flex-start;
   background: rgba(26, 26, 26, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -279,6 +282,9 @@ body {
   justify-content: flex-start;
   padding: 10px 12px;
   transition: border-color 150ms ease, background 150ms ease;
+  line-height: 1.3;
+  text-align: left;
+  word-break: break-word;
 }
 
 .sidebar__navBullet {
