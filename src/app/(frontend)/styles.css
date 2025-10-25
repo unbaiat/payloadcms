@@ -221,10 +221,10 @@ body {
 }
 
 .sidebar__navLabel {
-  font-size: 0.95rem;
-  font-weight: 500;
   flex: 1;
-  line-height: 1.25;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
   white-space: normal;
 }
 
@@ -278,7 +278,7 @@ body {
   cursor: pointer;
   display: flex;
   gap: 10px;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   justify-content: flex-start;
   padding: 10px 12px;
   transition: border-color 150ms ease, background 150ms ease;
